@@ -21,7 +21,7 @@ services:
       - "80:80"
       - "443:443"
       # The Web UI (enabled by --api.insecure=true)
-      - "8080:8080"
+      # - "8080:8080"
     restart: always
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -31,6 +31,7 @@ services:
       - "traefik.http.routers.traefikdash.rule=Host(`traefik.feuer.dev`)"
       - "traefik.http.routers.traefikdash.entrypoints=websecure"
       - "traefik.http.routers.traefikdash.tls.certresolver=letsencrypt"
+      - "traefik.http.services.traefikdash.loadbalancer.server.port=8080"
     networks:
          - jnet
 
