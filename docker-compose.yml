@@ -51,5 +51,5 @@ networks:
   #   labels:
   #     - "traefik.http.routers.jenkins.rule=Host(`jenkins.localhost`)"
   #     - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
-volumes:
-  jenkins_home:
+# volumes:
+#   jenkins_home:
