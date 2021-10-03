@@ -24,10 +24,13 @@ services:
       - "8080:8080"
     restart: always
     volumes:
-      # So that Traefik can listen to the Docker events
       - "/var/run/docker.sock:/var/run/docker.sock"
-      # - "./traefik.toml:/traefik.toml"
       - "./acme.json:/acme.json"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`traefik.feuer.dev`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=letsencrypt"
     networks:
          - jnet
 
