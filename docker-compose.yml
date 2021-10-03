@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  traefik:
+    image: traefik:v2.5
+    # Enables the web UI and tells Traefik to listen to docker
+    command: 
+      # - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--certificatesresolvers.myresolver.acme.email=jannik@feuer.dev"
+      - "--certificatesresolvers.myresolver.acme.storage=/acme.json"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+    ports:
+      # The HTTP port
+      - "80:80"
+      - "443:443"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    restart: always
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      # - "./traefik.toml:/traefik.toml"
+      - "./acme.json:/acme.json"
+    networks:
+      - default 
+
+  # whoami:
+  #   image: "traefik/whoami"
+  #   container_name: "simple-service"
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.whoami.rule=Host(`jenkins.feuer.dev`)"
+  #     - "traefik.http.routers.whoami.entrypoints=websecure"
+  #     - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+
+  # jenkins:
+  #   image: 'jenkins/jenkins:lts-jdk11'
+  #   volumes:
+  #     - 'jenkins_home:/var/jenkins_home'
+  #   labels:
+  #     - "traefik.http.routers.jenkins.rule=Host(`jenkins.localhost`)"
+  #     - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
+volumes:
+  jenkins_home:
