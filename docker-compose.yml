@@ -36,7 +36,6 @@ services:
 
 networks:
   jnet:
-    external: true
     name: jnet
   # whoami:
   #   image: "traefik/whoami"
