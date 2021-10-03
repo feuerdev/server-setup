@@ -28,9 +28,9 @@ services:
       - "./acme.json:/acme.json"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`traefik.feuer.dev`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefikdash.rule=Host(`traefik.feuer.dev`)"
+      - "traefik.http.routers.traefikdash.entrypoints=websecure"
+      - "traefik.http.routers.traefikdash.tls.certresolver=letsencrypt"
     networks:
          - jnet
 
