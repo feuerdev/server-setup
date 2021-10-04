@@ -45,6 +45,8 @@ services:
       - "traefik.http.routers.whoami.tls.certresolver=letsencrypt"
     networks:
       - jnet
+volumes:
+  jenkins_home:
 
 networks:
   jnet:
