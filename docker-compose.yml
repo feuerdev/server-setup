@@ -25,32 +25,27 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefikdash.rule=Host(`traefik.feuer.dev`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
-      - "traefik.http.routers.traefikdash.rule=Host(`traefik.feuer.dev`)"
       - "traefik.http.routers.traefikdash.entrypoints=websecure"
       - "traefik.http.routers.traefikdash.service=api@internal"
       - "traefik.http.routers.traefikdash.tls.certresolver=letsencrypt"
       - "traefik.http.services.traefikdash.loadbalancer.server.port=8080"
     networks:
       - jnet
+  jenkins:
+    image: "jenkins/jenkins:lts-jdk11"
+    ports:
+      - '8080:8080'
+      - '50000:50000'
+    volumes:
+      - "jenkins_home:/var/jenkins_home"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`jenkins.feuer.dev`)"
+      - "traefik.http.routers.whoami.entrypoints=websecure"
+      - "traefik.http.routers.whoami.tls.certresolver=letsencrypt"
+    networks:
+      - jnet
 
 networks:
   jnet:
     name: jnet
-  # whoami:
-  #   image: "traefik/whoami"
-  #   container_name: "simple-service"
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.whoami.rule=Host(`jenkins.feuer.dev`)"
-  #     - "traefik.http.routers.whoami.entrypoints=websecure"
-  #     - "traefik.http.routers.whoami.tls.certresolver=myresolver"
-
-  # jenkins:
-  #   image: 'jenkins/jenkins:lts-jdk11'
-  #   volumes:
-  #     - 'jenkins_home:/var/jenkins_home'
-  #   labels:
-  #     - "traefik.http.routers.jenkins.rule=Host(`jenkins.localhost`)"
-  #     - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
-# volumes:
-#   jenkins_home:
