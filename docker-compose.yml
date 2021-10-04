@@ -33,6 +33,7 @@ services:
       - jnet
   jenkins:
     image: "jenkins/jenkins:lts-jdk11"
+    container_name: "jenkins"
     ports:
       - '8080:8080'
       - '50000:50000'
